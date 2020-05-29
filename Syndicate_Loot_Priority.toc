@@ -1,7 +1,7 @@
 ## Interface: 11303
 ## Title: Syndicate_Loot_Priority
 ## Author: pawthorn and Q of inception
-## Version: 1.0.2
+## Version: 1.0.4
 
 loot_table.lua
 main_functions.lua
