@@ -29,6 +29,10 @@ end
 local function append_tooltip(tooltip)
 	local itemname, itemlink = tooltip:GetItem()
 	local lines = {}
+
+	if not itemlink then
+		return
+	end
 	
 	for i, row in ipairs(LOOT_ROLES) do
 		local key = row[1]
