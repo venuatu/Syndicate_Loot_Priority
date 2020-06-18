@@ -23,9 +23,14 @@ local TYPE_CHAT_PREFIXES = {
 }
 
 function syn_create_loot_lines(itemlink)
+	if not itemlink then
+		return {}
+	end
+	
 	local iid = itemlink:match("item:(%d+):")
 	local item = syn_find_loot(iid)
 	-- print(strconcat('scll ', iid, ": ", itemlink))
+	
 	if not item then
 		return {}
 	end
