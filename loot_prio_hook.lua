@@ -107,6 +107,68 @@ end
 
 HandleModifiedItemClick = syn_itemclick
 
+function syn_do_override(item, version)
+	local link = CEPGP_getItemLink(item["id"])
+	if not link then
+		-- print(syn_strconcat("pulling item info ", item["id"]))
+		-- local itemobj = Item:CreateFromItemID(tonumber(item["id"]))
+		-- itemobj:ContinueOnItemLoad(function()
+		-- 	print(syn_strconcat("loaded item info ", item["id"]))
+		-- 	syn_do_override(item, version)
+		-- end)
+		print(syn_strconcat('error loading item ', item["id"], ": ", item["name"]))
+		return
+	end
+	OVERRIDE_INDEX[link] = item[version]
+end
+
+function syn_continue_override_cepgp(to_load, i, n)
+	if not i then
+		i = 1
+	end
+	if i % 10 == 0 then
+		print(strconcat('Syn: download ', i, ' of ', #to_load, ' items'))
+	end
+	if i >= #to_load then
+		print(strconcat('Syn: finished overriding ', n, ' items in CEPGP'))
+	else
+		local item = to_load[i]
+		local itemobj = Item:CreateFromItemID(tonumber(item["id"]))
+		itemobj:ContinueOnItemLoad(function()
+			-- print(syn_strconcat("loaded item info ", item["id"]))
+			syn_continue_override_cepgp(to_load, i + 1, n)
+			syn_do_override(item, version)
+		end)
+	end
+	-- for i, item in ipairs(inception_loot_table) do
+	-- 	if item[version] and item["phase"] <= "4" then
+	-- 		syn_do_override(item, version)
+	-- 	end
+	-- end
+end
+
+function syn_override_cepgp(version)
+	if not version then
+		version = "gp"
+	end
+	local to_load = {}
+	local n = 0
+	for i, item in ipairs(inception_loot_table) do
+		if item[version] then
+			name, link = GetItemInfo(item["id"])
+			if not link then
+				table.insert(to_load, item)
+			else
+				syn_do_override(item, version)
+			end
+			n = n + 1
+		end
+	end
+	print(strconcat('Syn: need to download ', #to_load, ' of ', n, ' items'))
+	syn_continue_override_cepgp(to_load, 1, n)
+end
+
+
 SLASH_SYNLOOT1 = "/syn"
 SLASH_SYNLOOT2 = "/slp"
 
@@ -119,6 +181,8 @@ SlashCmdList.SYNLOOT = function(input)
         SYN_PRINT_TYPE = 'open'
     elseif bits[1] == 'gp' then
         SYN_PRINT_TYPE = 'gp'
+    elseif bits[1] == 'override' then
+        syn_override_cepgp(bits[2])
     else
 		print(syn_strconcat('Use "/syn (main|open|gp)" to switch modes'))
     end

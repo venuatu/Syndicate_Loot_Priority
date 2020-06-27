@@ -2,8 +2,11 @@
 ## Title: Syndicate_Loot_Priority
 ## Author: pawthorn and Q of inception
 ## SavedVariables: SYN_PRINT_TYPE
-## Version: 1.0.8
+## Version: 1.0.9
 
 loot_table.lua
 main_functions.lua
 loot_prio_hook.lua
+
+# prevep / (avggp * num items)
+# bosses * avggp / prevep
