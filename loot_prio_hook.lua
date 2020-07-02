@@ -76,7 +76,7 @@ end
 GameTooltip:HookScript("OnTooltipSetItem", syn_append_tooltip)
 ItemRefTooltip:HookScript("OnTooltipSetItem", syn_append_tooltip)
 
-local SYN_PRINT_TYPE = 'main'
+SYN_PRINT_TYPE = 'main'
 
 function syn_printloot(link)
 	if ( not link ) then
@@ -166,8 +166,75 @@ function syn_override_cepgp(version)
 	end
 	print(strconcat('Syn: need to download ', #to_load, ' of ', n, ' items'))
 	syn_continue_override_cepgp(to_load, 1, n)
+	CEPGP["Overrides"] = OVERRIDE_INDEX
 end
 
+
+-- /script local n, l = GetItemInfo(16900); CEPGP_announce(l, 1, 1, 1)
+-- local id = "16900"; local name, link, quality, _, _, ty, sty, _, _, tex, _ = GetItemInfo(id); CEPGP_populateFrame({{[1]=tex, [2]=name, [3]=quality, [4]=link, [5]=id, [6]=1, [7]=1}})
+
+-- /script syn_loot_bags()
+
+function syn_cepgp_to_item(iid)
+	local it = {}
+	local name, link, quality, _, _, ty, sty, _, _, tex, _ = GetItemInfo(iid)
+	if not link then
+		print(syn_strconcat("Syn: unknown item: ", iid))
+	end
+
+	it[1] = tex
+	it[2] = name
+	it[3] = quality
+	it[4] = link
+	local itemString = string.find(link, "item[%-?%d:]+")
+	itemString = strsub(link, itemString, string.len(link)-string.len(name)-6)
+	it[5] = itemString
+	it[6] = 1
+	it[7] = 1
+	local _, iid = strsplit(":", link)
+	it[8] = iid
+	return it
+end
+
+function syn_loot_bags()
+	local items = {}
+	local seen = {}
+	for b = 0, 4 do
+		for s = 1, 30 do
+			local iid = GetContainerItemID(b, s)
+			if iid and not seen[iid] then
+				seen[iid] = true
+				local it = syn_cepgp_to_item(iid)
+				if syn_find_loot(iid) then
+					table.insert(items, it)
+				end
+			end
+		end
+	end
+	table.sort(items, function(a, b)
+		return tonumber(syn_find_loot(a[8])["gp"]) > tonumber(syn_find_loot(b[8])["gp"])
+	end)
+	syn_cepgp_start_loot(items)
+end
+
+function syn_loot_item(iid)
+	local items = {
+		syn_cepgp_to_item(iid),
+	}
+	syn_cepgp_start_loot(items)
+end
+
+function syn_cepgp_start_loot(items)
+	CEPGP_frame:Show();
+	CEPGP_mode = "loot";
+	CEPGP_toggleFrame("CEPGP_loot");
+	CEPGP_populateFrame(items);
+	CEPGP_distribute_popup_give = function()
+		print("Syn: CEPGP_distribute_popup_give has been hooked, /reload to restore cepgp master looting integration")
+		CEPGP_handleLoot("LOOT_SLOT_CLEARED", CEPGP_lootSlot)
+	end
+	CEPGP_LootFrame_Update = syn_loot_bags
+end
 
 SLASH_SYNLOOT1 = "/syn"
 SLASH_SYNLOOT2 = "/slp"
@@ -183,6 +250,10 @@ SlashCmdList.SYNLOOT = function(input)
         SYN_PRINT_TYPE = 'gp'
     elseif bits[1] == 'override' then
         syn_override_cepgp(bits[2])
+    elseif bits[1] == 'loot' then
+        syn_loot_item(syn_strjoin(syn_slice(bits, 2), " "))
+    elseif bits[1] == 'lootbags' then
+        syn_loot_bags()
     else
 		print(syn_strconcat('Use "/syn (main|open|gp)" to switch modes'))
     end

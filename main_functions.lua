@@ -25,6 +25,17 @@ function syn_strjoin(arr, sep)
     return str
 end
 
+function syn_slice(tbl, first, last, step)
+    -- https://stackoverflow.com/a/24823383
+    local sliced = {}
+
+    for i = first or 1, last or #tbl, step or 1 do
+        sliced[#sliced+1] = tbl[i]
+    end
+
+    return sliced
+end
+
 function syn_strtok(word, ch)
   local toks = {}
   local i, j = 0, 0
