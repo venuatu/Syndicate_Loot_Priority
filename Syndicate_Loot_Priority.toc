@@ -2,7 +2,7 @@
 ## Title: Syndicate_Loot_Priority
 ## Author: pawthorn and Q of inception
 ## SavedVariables: SYN_PRINT_TYPE
-## Version: 1.0.10
+## Version: 1.0.11
 
 loot_table.lua
 main_functions.lua
