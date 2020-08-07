@@ -26,18 +26,18 @@ function syn_create_loot_lines(itemlink)
 	if not itemlink then
 		return {}
 	end
-	
+
 	local iid = itemlink:match("item:(%d+):")
 	local item = syn_find_loot(iid)
-	-- print(strconcat('scll ', iid, ": ", itemlink))
-	
+	-- print(syn_strconcat('scll ', iid, ": ", itemlink))
+
 	if not item then
 		return {}
 	end
 
 	local lines = {}
-	
-	for i, row in ipairs(LOOT_ROLES) do
+
+	for _, row in ipairs(LOOT_ROLES) do
 		local key = row[1]
 		local fmt = row[2]
 		local line = row[3]
@@ -63,7 +63,7 @@ function syn_create_loot_lines(itemlink)
 end
 
 function syn_append_tooltip(tooltip)
-	local itemname, itemlink = tooltip:GetItem()
+	local _, itemlink = tooltip:GetItem()
 
 	local lines = syn_create_loot_lines(itemlink)
 
@@ -85,9 +85,8 @@ function syn_printloot(link)
 	local lines = syn_create_loot_lines(link)
 	local msg = string.format(TYPE_CHAT_PREFIXES[SYN_PRINT_TYPE], lines[SYN_PRINT_TYPE] or 'none')
 	msg = syn_strconcat(link, " ", msg)
-	if ( ChatEdit_InsertLink(msg) ) then
-	elseif ( SocialPostFrame and Social_IsShown() and Social_InsertLink(msg) ) then
-	else
+	if not (( ChatEdit_InsertLink(msg) ) or
+		( SocialPostFrame and Social_IsShown() and Social_InsertLink(msg) )) then
 		syn_SendMessageGroup(msg)
 	end
 	return true
@@ -122,15 +121,15 @@ function syn_do_override(item, version)
 	OVERRIDE_INDEX[link] = item[version]
 end
 
-function syn_continue_override_cepgp(to_load, i, n)
+function syn_continue_override_cepgp(to_load, i, n, version)
 	if not i then
 		i = 1
 	end
 	if i % 10 == 0 then
-		print(strconcat('Syn: download ', i, ' of ', #to_load, ' items'))
+		print(syn_strconcat('Syn: download ', i, ' of ', #to_load, ' items'))
 	end
 	if i >= #to_load then
-		print(strconcat('Syn: finished overriding ', n, ' items in CEPGP'))
+		print(syn_strconcat('Syn: finished overriding ', n, ' items in CEPGP'))
 	else
 		local item = to_load[i]
 		local itemobj = Item:CreateFromItemID(tonumber(item["id"]))
@@ -153,9 +152,9 @@ function syn_override_cepgp(version)
 	end
 	local to_load = {}
 	local n = 0
-	for i, item in ipairs(inception_loot_table) do
+	for _, item in ipairs(inception_loot_table) do
 		if item[version] then
-			name, link = GetItemInfo(item["id"])
+			local _, link = GetItemInfo(item["id"])
 			if not link then
 				table.insert(to_load, item)
 			else
@@ -164,8 +163,8 @@ function syn_override_cepgp(version)
 			n = n + 1
 		end
 	end
-	print(strconcat('Syn: need to download ', #to_load, ' of ', n, ' items'))
-	syn_continue_override_cepgp(to_load, 1, n)
+	print(syn_strconcat('Syn: need to download ', #to_load, ' of ', n, ' items'))
+	syn_continue_override_cepgp(to_load, 1, n, version)
 	CEPGP["Overrides"] = OVERRIDE_INDEX
 end
 
@@ -175,11 +174,11 @@ end
 
 -- /script syn_loot_bags()
 
-function syn_cepgp_to_item(iid)
+function syn_cepgp_to_item(item)
 	local it = {}
-	local name, link, quality, _, _, ty, sty, _, _, tex, _ = GetItemInfo(iid)
+	local name, link, quality, _, _, _, _, _, _, tex, _ = GetItemInfo(item)
 	if not link then
-		print(syn_strconcat("Syn: unknown item: ", iid))
+		print(syn_strconcat("Syn: unknown item: ", item))
 	end
 
 	it[1] = tex

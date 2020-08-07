@@ -2,7 +2,7 @@
 local syn_loot_by_id = {}
 
 do
-    for index, value in next, inception_loot_table do
+    for _, value in next, inception_loot_table do
         syn_loot_by_id[value["id"]] = value
     end
 end
@@ -38,7 +38,8 @@ end
 
 function syn_strtok(word, ch)
   local toks = {}
-  local i, j = 0, 0
+  local i
+  local j = 0
   while j ~= nil do
     local start = j and j + 1 or 0
     i, j = word:find(ch, start)
@@ -62,7 +63,7 @@ function syn_strconcat(...)
 end
 
 function syn_SendMessageGroup(...)
-    local words = strconcat(...)
+    local words = syn_strconcat(...)
     -- words = "Big" words
     if IsInRaid() then
         SendChatMessage(words, "RAID")
