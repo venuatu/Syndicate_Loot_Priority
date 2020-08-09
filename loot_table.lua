@@ -1,4 +1,4 @@
-inception_loot_table = {
+syndicate_loot_table = {
 {["name"] = "Ancient Petrified Leaf", ["zone"] = "Molten Core", ["gp"] = "731", ["ogp"] = "731", ["boss"] = "Token", ["link"] = "link", ["phase"] = "1", ["id"] = "18703"},
 {["name"] = "Desecrated Belt", ["zone"] = "Naxxramas", ["gp"] = "985", ["boss"] = "Token", ["link"] = "link", ["phase"] = "6", ["id"] = "22370"},
 {["name"] = "Desecrated Bindings", ["zone"] = "Naxxramas", ["gp"] = "990", ["boss"] = "Token", ["link"] = "link", ["phase"] = "6", ["id"] = "22369"},

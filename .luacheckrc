@@ -25,25 +25,8 @@ globals = {
     "SYN_PRINT_TYPE",
 
     -- functions
-    "inception_loot_table",
-    "syn_SendMessageGroup",
-    "syn_append_tooltip",
-    "syn_cepgp_start_loot",
-    "syn_cepgp_to_item",
-    "syn_continue_override_cepgp",
-    "syn_create_loot_lines",
-    "syn_do_override",
-    "syn_find_loot",
-    "syn_itemclick",
-    "syn_loot_bags",
-    "syn_loot_item",
-    "syn_override_cepgp",
-    "syn_printloot",
-    "syn_slice",
-    "syn_strconcat",
-    "syn_strjoin",
-    "syn_strtok",
-
+    "syndicate_loot_table",
+    "SYN",
 
 	-- CEPGP hooks
 	"CEPGP",

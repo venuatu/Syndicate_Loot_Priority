@@ -1,18 +1,20 @@
 -- searches for a specific item's information in loot_table.lua
-local syn_loot_by_id = {}
+SYN = {}
+
+SYN.loot_by_id = {}
 
 do
-    for _, value in next, inception_loot_table do
-        syn_loot_by_id[value["id"]] = value
+    for _, value in next, syndicate_loot_table do
+        SYN.loot_by_id[value["id"]] = value
     end
 end
 -- {["loot_zone"] = "Blackwing Lair", ["loot_bosses"] = "Razorgore the Untamed", ["loot_name"] = "Mantle of the Blackwing Cabal", ["loot_id"] = "19370", ["mainspec_1"] = "Caster DPS", ["mainspec_2"] = "Priest", ["offset"] = "", ["prio"] = ""},
 
-function syn_find_loot(item_id)
-    return syn_loot_by_id[item_id]
+function SYN:find_loot(item_id)
+    return SYN.loot_by_id[item_id]
 end
 
-function syn_strjoin(arr, sep)
+function SYN:strjoin(arr, sep)
     local str = ''
     local len = #arr
 
@@ -25,7 +27,7 @@ function syn_strjoin(arr, sep)
     return str
 end
 
-function syn_slice(tbl, first, last, step)
+function SYN:slice(tbl, first, last, step)
     -- https://stackoverflow.com/a/24823383
     local sliced = {}
 
@@ -36,7 +38,7 @@ function syn_slice(tbl, first, last, step)
     return sliced
 end
 
-function syn_strtok(word, ch)
+function SYN:strtok(word, ch)
   local toks = {}
   local i
   local j = 0
@@ -53,7 +55,7 @@ function syn_strtok(word, ch)
   return toks
 end
 
-function syn_strconcat(...)
+function SYN:strconcat(...)
     local str = ''
     local args = {...}
     for i = 1, #args do
@@ -62,8 +64,8 @@ function syn_strconcat(...)
     return str
 end
 
-function syn_SendMessageGroup(...)
-    local words = syn_strconcat(...)
+function SYN:SendMessageGroup(...)
+    local words = SYN:strconcat(...)
     -- words = "Big" words
     if IsInRaid() then
         SendChatMessage(words, "RAID")
