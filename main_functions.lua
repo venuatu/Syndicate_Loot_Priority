@@ -76,3 +76,18 @@ function SYN:SendMessageGroup(...)
         print(words)
     end
 end
+
+function SYN:UpdateBankNotes()
+    local BANK_TOONS = {'Synbank','Synherbs','Synmats','Synpots','Synterlink','Syntrelink'}
+    SetGuildRosterShowOffline(true)
+    GuildRoster()
+    for i = 1,GetNumGuildMembers() do
+        local n,_,_,_,_,_,_,ono=GetGuildRosterInfo(i)
+        for _,x in ipairs(BANK_TOONS) do
+            if n and n:find(x) then
+                print(SYN:strconcat('updating bank toon ', i, " -> ", n, ': ', ono))
+                GuildRosterSetOfficerNote(i, "gbank")
+            end
+        end
+    end
+end

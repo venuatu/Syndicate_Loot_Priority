@@ -60,6 +60,11 @@ globals = {
     "SocialPostFrame",
     "Social_InsertLink",
     "Social_IsShown",
+    'SetGuildRosterShowOffline',
+    'GuildRoster',
+    'GetNumGuildMembers',
+    'GetGuildRosterInfo',
+    'GuildRosterSetOfficerNote',
 
     -- lua
     "strsub",
