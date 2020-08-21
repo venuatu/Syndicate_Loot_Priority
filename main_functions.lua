@@ -14,6 +14,13 @@ function SYN:find_loot(item_id)
     return SYN.loot_by_id[item_id]
 end
 
+function SYN:RCEPGP(itemID)
+    local iid = tostring(itemID)
+    local item = SYN:find_loot(iid)
+    return tonumber(item and (item['ogp'] or item['gp']) or '1')
+    -- ['ogp'] or SYN:find_loot(tostring(itemID))['gp'] or 1
+end
+
 function SYN:strjoin(arr, sep)
     local str = ''
     local len = #arr

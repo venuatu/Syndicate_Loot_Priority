@@ -30,6 +30,7 @@ globals = {
 
     -- externals
     "LootReserve",
+    "LibStub",
 
 	-- CEPGP hooks
 	"CEPGP",

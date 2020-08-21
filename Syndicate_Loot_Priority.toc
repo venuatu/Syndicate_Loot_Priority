@@ -6,6 +6,7 @@
 
 loot_table.lua
 main_functions.lua
+LibGearPoints-1.2.lua
 loot_prio_hook.lua
 
 # prevep / (avggp * num items)
