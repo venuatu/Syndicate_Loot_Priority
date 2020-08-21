@@ -28,6 +28,9 @@ globals = {
     "syndicate_loot_table",
     "SYN",
 
+    -- externals
+    "LootReserve",
+
 	-- CEPGP hooks
 	"CEPGP",
 	"CEPGP_LootFrame_Update",

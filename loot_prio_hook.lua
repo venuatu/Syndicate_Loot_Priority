@@ -235,6 +235,37 @@ function SYN:cepgp_start_loot(items)
 	CEPGP_LootFrame_Update = function () SYN:loot_bags() end
 end
 
+function SYN:PrintReserves()
+    local state = LootReserve.Server.CurrentSession.AcceptingReserves and 'Open' or 'Closed'
+    SYN:SendMessageGroup('Soft Reserve List: ', state)
+
+    for item, x in pairs(LootReserve.Server.CurrentSession.ItemReserves) do
+        SYN:PrintItem(item, x.Players)
+    end
+    SYN:SendMessageGroup('Loot Rules: Soft Reserve > Main-spec > Off-spec. People without reserves get 3 rounds of greens.')
+    SYN:SendMessageGroup('Everyone gets one soft reserve(free), only people that have reserved can roll on soft reserved items')
+    SYN:SendMessageGroup('Whisper me to soft reserve: !reserve itemNameOrLink')
+
+    -- zg mounts
+    LootReserve.Server.ReservableItems[19902] = nil
+    LootReserve.Server.ReservableItems[19872] = nil
+end
+
+function SYN:PrintItem(item)
+    print(tostring(item))
+    local itemres = LootReserve.Server.CurrentSession.ItemReserves[item]
+    local players = itemres and itemres.Players or {}
+    local _, link = GetItemInfo(item)
+    if link == nil then
+        Item:CreateFromItemID(item):ContinueOnItemLoad(function()
+            SYN:PrintItem(item)
+        end)
+        return
+    end
+
+    SYN:SendMessageGroup(link, ' for (', #players, '): ', SYN:strjoin(players, ', '))
+end
+
 SLASH_SYNLOOT1 = "/syn"
 SLASH_SYNLOOT2 = "/slp"
 
@@ -253,6 +284,8 @@ SlashCmdList.SYNLOOT = function(input)
         SYN:loot_item(SYN:strjoin(SYN:slice(bits, 2), " "))
     elseif bits[1] == 'lootbags' then
         SYN:loot_bags()
+    elseif bits[1] == 'pr' or bits[1] == 'res' or bits[1] == 'printres' then
+        SYN:PrintReserves()
     else
 		print(SYN:strconcat('Use "/syn (main|open|gp)" to switch modes'))
     end
