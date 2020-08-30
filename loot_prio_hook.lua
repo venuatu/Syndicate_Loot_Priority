@@ -278,16 +278,16 @@ SlashCmdList.SYNLOOT = function(input)
         SYN_PRINT_TYPE = 'open'
     elseif bits[1] == 'gp' then
         SYN_PRINT_TYPE = 'gp'
-    elseif bits[1] == 'override' then
-        SYN:override_cepgp(bits[2])
-    elseif bits[1] == 'loot' then
-        SYN:loot_item(SYN:strjoin(SYN:slice(bits, 2), " "))
-    elseif bits[1] == 'lootbags' then
-        SYN:loot_bags()
-    elseif bits[1] == 'pr' or bits[1] == 'res' or bits[1] == 'printres' then
+    -- elseif bits[1] == 'override' then
+    --     SYN:override_cepgp(bits[2])
+    -- elseif bits[1] == 'loot' then
+    --     SYN:loot_item(SYN:strjoin(SYN:slice(bits, 2), " "))
+    -- elseif bits[1] == 'lootbags' then
+    --     SYN:loot_bags()
+    elseif bits[1] == 'pr' or bits[1] == 'res' or bits[1] == 'reserve' or bits[1] == 'printres' then
         SYN:PrintReserves()
     else
-		print(SYN:strconcat('Use "/syn (main|open|gp)" to switch modes'))
+		print(SYN:strconcat('Use "/syn (main|open|gp|res|reserve)"'))
     end
 	print(SYN:strconcat('Syndicate Loot Priority: in "', SYN_PRINT_TYPE, '" printing mode'))
 end

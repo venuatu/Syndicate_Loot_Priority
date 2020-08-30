@@ -5,7 +5,7 @@ if _G.LibStub then
   local lib, _ = LibStub:NewLibrary(MAJOR_VERSION, MINOR_VERSION)
   if not lib then return end
 
-  local l13 = LibStub("LibGearPoints-1.3")
+  local l13 = LibStub("LibGearPoints-1.3", true)
 
   function lib:GetNumRecentItems()
     return l13:GetNumRecentItems()

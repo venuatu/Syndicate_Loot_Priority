@@ -26,7 +26,7 @@ function SYN:strjoin(arr, sep)
     local len = #arr
 
     for i, s in ipairs(arr) do
-        str = str .. s
+        str = str .. tostring(s)
         if i ~= len then
             str = str .. sep
         end
@@ -85,7 +85,7 @@ function SYN:SendMessageGroup(...)
 end
 
 function SYN:UpdateBankNotes()
-    local BANK_TOONS = {'Synbank','Synherbs','Synmats','Synpots','Synterlink','Syntrelink'}
+    local BANK_TOONS = {'Synchant','Synbank','Synherbs','Synmats','Synpots','Synterlink','Syntrelink'}
     SetGuildRosterShowOffline(true)
     GuildRoster()
     for i = 1,GetNumGuildMembers() do
