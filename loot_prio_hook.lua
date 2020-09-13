@@ -235,6 +235,13 @@ function SYN:cepgp_start_loot(items)
 	CEPGP_LootFrame_Update = function () SYN:loot_bags() end
 end
 
+local orig_broadcast = nil
+
+local function lr_broadcast_item(self, item, players)
+	SYN:PrintItem(item, players)
+	orig_broadcast(self, item, players)
+end
+
 function SYN:PrintReserves()
     local state = LootReserve.Server.CurrentSession.AcceptingReserves and 'Open' or 'Closed'
     SYN:SendMessageGroup('Soft Reserve List: ', state)
@@ -242,17 +249,19 @@ function SYN:PrintReserves()
     for item, x in pairs(LootReserve.Server.CurrentSession.ItemReserves) do
         SYN:PrintItem(item, x.Players)
     end
-    SYN:SendMessageGroup('Loot Rules: Soft Reserve > Main-spec > Off-spec. People without reserves get 3 rounds of greens.')
+    SYN:SendMessageGroup('Loot Rules: Soft Reserve > Main-spec > Off-spec')
     SYN:SendMessageGroup('Everyone gets one soft reserve(free), only people that have reserved can roll on soft reserved items')
     SYN:SendMessageGroup('Whisper me to soft reserve: !reserve itemNameOrLink')
 
-    -- zg mounts
-    LootReserve.Server.ReservableItems[19902] = nil
-    LootReserve.Server.ReservableItems[19872] = nil
+    -- LootReserve.Comm:BroadcastReserveInfo(item, reserve.Players);
+    if not orig_broadcast then
+		orig_broadcast = LootReserve.Comm.BroadcastReserveInfo
+		LootReserve.Comm.BroadcastReserveInfo = lr_broadcast_item
+    end
 end
 
 function SYN:PrintItem(item)
-    print(tostring(item))
+    -- print(tostring(item))
     local itemres = LootReserve.Server.CurrentSession.ItemReserves[item]
     local players = itemres and itemres.Players or {}
     local _, link = GetItemInfo(item)
