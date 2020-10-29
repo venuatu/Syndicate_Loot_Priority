@@ -1,6 +1,7 @@
 BINDING_HEADER_DKP = "Syndicate Loot Priority";
 
 local LOOT_ROLES = {
+	{"token", "%s", 'main'},
 	{"ms1", "ms1: %s", 'main'},
 	{"ms2", "ms2: %s", 'main'},
 	{"os", "os1: %s", 'main'},
