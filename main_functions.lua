@@ -21,6 +21,40 @@ function SYN:RCEPGP(itemID)
     -- ['ogp'] or SYN:find_loot(tostring(itemID))['gp'] or 1
 end
 
+function SYN:get_item_id(link)
+    if link == nil then return nil end
+    return link:match("item:(%d+):")
+end
+
+local class_item_cache = {}
+
+function SYN:find_class_item(link, cls)
+    if link == nil or cls == nil then return nil end
+    cls = cls:lower()
+    if class_item_cache[cls .. link] then
+        return class_item_cache[cls .. link]
+    end
+    local tokid = SYN:get_item_id(link)
+    local token = SYN:find_loot(tokid)
+    local options = {}
+
+    if token then
+        -- print('convert ' .. tostring(name) .. ' '  .. tostring(link))
+        for _, value in next, syndicate_loot_table do
+            if value['token'] == token['name'] and value['class'] and value['class']:lower() == cls then
+                print(SYN:strconcat('Converted ', link, ' -> ', value['name'] , ' for ', value['class']))
+                table.insert(options, value)
+            end
+        end
+    end
+    if #options ~= 1 then
+        -- print(SYN:strconcat('skipping conversion unable to find item: ', cls, ' ', link, ' ', #options))
+        return nil
+    end
+    class_item_cache[cls .. link] = options[1]
+    return options[1]
+end
+
 function SYN:strjoin(arr, sep)
     local str = ''
     local len = #arr

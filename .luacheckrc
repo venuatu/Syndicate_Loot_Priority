@@ -29,6 +29,7 @@ globals = {
     "SYN",
 
     -- externals
+    "EPGP",
     "LootReserve",
     "LibStub",
 
@@ -49,7 +50,9 @@ globals = {
     "ChatEdit_InsertLink",
     "GameTooltip",
     "GetContainerItemID",
+    "GetGuildInfo",
     "GetItemInfo",
+    "GetRealmName",
     "HandleModifiedItemClick",
     "IsAltKeyDown",
     "IsInGroup",
