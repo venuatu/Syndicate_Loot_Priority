@@ -3,7 +3,7 @@
 ## Author: pawthorn and Q of inception
 ## SavedVariables: SYN_PRINT_TYPE
 ## OptionalDeps: RCLootCouncil_EPGP_Classic, RCLootCouncil_Classic
-## Version: 1.0.19
+## Version: 1.0.20
 
 loot_table.lua
 main_functions.lua
