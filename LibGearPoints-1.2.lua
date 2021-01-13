@@ -6,9 +6,15 @@ if _G.LibStub then
   if not lib then return end
   local guild = GetGuildInfo('player')
   local realm = GetRealmName()
-  if guild ~= 'Syndicate' or realm ~= 'Yojamba' then
-    print('synhook disabled for ' .. tostring(guild) .. '-' .. tostring(realm))
-    return
+
+  local function in_syndicate()
+    if guild == nil then
+      guild = GetGuildInfo('player')
+    end
+    if realm == nil then
+      realm = GetRealmName()
+    end
+    return guild == 'Syndicate' or realm == 'Yojamba'
   end
 
   local l13 = LibStub("LibGearPoints-1.3", true)
@@ -38,10 +44,14 @@ if _G.LibStub then
     local _, itemLink, rarity, ilvl, _, _, _, _, equipLoc = GetItemInfo(item)
     if not itemLink then return end
 
+    if not in_syndicate() then
+      local gp1, c1 = l13:GetValue(item)
+      if not gp1 then return end
+      return gp1, c1, ilvl, rarity, equipLoc
+    end
+
     local iid = itemLink:match("item:(%d+):")
     local gp = SYN:RCEPGP(iid)
-    -- local gp1, c1, gp2, c2, gp3, c3 = l13:GetValue(item)
-    -- if not gp1 then return end
 
     return gp, 0, ilvl, rarity, equipLoc
   end
@@ -125,17 +135,19 @@ if _G.LibStub then
       print('synhook didnt see epgp classic')
       return
     end
-    EPGP:GetModule('boss').db.profile.bossreward = {
+    EPGP:GetModule('gptooltip').db.profile.enabled = false
+    local bossprof = EPGP:GetModule('boss').db.profile
+    bossprof.bossreward = {
       [710] = 1150,
       [712] = 1150,
       [714] = 1150,
       [716] = 1150,
       [1109] = 1500,
-      [663] = 65161,
-      [665] = 65161,
-      [667] = 65161,
-      [669] = 65161,
-      [671] = 65161,
+      [663] = 600,
+      [665] = 600,
+      [667] = 600,
+      [669] = 600,
+      [671] = 600,
       [610] = 1000,
       [612] = 1000,
       [614] = 1000,
@@ -147,7 +159,7 @@ if _G.LibStub then
       [1111] = 1500,
       [1115] = 1500,
       [1119] = 1500,
-      [664] = 65161,
+      [664] = 600,
       [1084] = 1000,
       [709] = 1150,
       [711] = 1150,
@@ -155,9 +167,9 @@ if _G.LibStub then
       [715] = 1150,
       [717] = 1400,
       [1107] = 1500,
-      [666] = 65161,
-      [668] = 65161,
-      [670] = 65161,
+      [666] = 600,
+      [668] = 600,
+      [670] = 600,
       [672] = 800,
       [611] = 1000,
       [613] = 1000,
@@ -170,9 +182,19 @@ if _G.LibStub then
       [1120] = 1500,
       [1113] = 1500,
     }
+    bossprof.enabled = true
+    bossprof.autoreward = true
+    bossprof.wipedetection = true
+    if bossprof.bossreward_wipe == nil then
+      bossprof.bossreward_wipe = {}
+    end
+    for bid, ep in pairs(bossprof.bossreward) do
+      bossprof.bossreward_wipe[bid] = floor(ep / 2)
+    end
   end
 
   function SynVF:OnInitialize()
+    if not in_syndicate() then return end
     if not RCVotingFrame.scrollCols then -- RCVotingFrame hasn't been initialized.
       return self:ScheduleTimer("OnInitialize", 0.5)
     end
