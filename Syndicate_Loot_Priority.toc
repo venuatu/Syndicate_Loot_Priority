@@ -1,14 +1,11 @@
-## Interface: 11306
+## Interface: 20501
 ## Title: Syndicate_Loot_Priority
 ## Author: pawthorn and Q of inception
 ## SavedVariables: SYN_PRINT_TYPE
 ## OptionalDeps: RCLootCouncil_EPGP_Classic, RCLootCouncil_Classic
-## Version: 1.0.20
+## Version: 2.0.1
 
 loot_table.lua
 main_functions.lua
 LibGearPoints-1.2.lua
 loot_prio_hook.lua
-
-# prevep / (avggp * num items)
-# bosses * avggp / prevep

@@ -11,7 +11,7 @@ end
 -- {["loot_zone"] = "Blackwing Lair", ["loot_bosses"] = "Razorgore the Untamed", ["loot_name"] = "Mantle of the Blackwing Cabal", ["loot_id"] = "19370", ["mainspec_1"] = "Caster DPS", ["mainspec_2"] = "Priest", ["offset"] = "", ["prio"] = ""},
 
 function SYN:find_loot(item_id)
-    return SYN.loot_by_id[item_id]
+    return SYN.loot_by_id[tonumber(item_id)]
 end
 
 function SYN:RCEPGP(itemID)

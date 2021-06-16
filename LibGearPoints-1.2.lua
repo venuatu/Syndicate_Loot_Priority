@@ -59,8 +59,10 @@ if _G.LibStub then
   local ace = LibStub("AceAddon-3.0", true)
   if not ace then return end
 
-  local addon = ace:GetAddon("RCLootCouncil")
-  local RCEPGP = addon:GetModule("RCEPGP")
+  local addon = ace:GetAddon("RCLootCouncil", true)
+  if not addon then return end
+  local RCEPGP = addon:GetModule("RCEPGP", true)
+  if not RCEPGP then return end
   local RCVotingFrame = addon:GetModule("RCVotingFrame")
   local LibDialog = LibStub("LibDialog-1.0")
   local SynVF = RCEPGP:NewModule("SyndicateVotingFrame", "AceComm-3.0", "AceConsole-3.0", "AceHook-3.0", "AceEvent-3.0", "AceTimer-3.0", "AceSerializer-3.0")
@@ -138,59 +140,12 @@ if _G.LibStub then
     EPGP:GetModule('gptooltip').db.profile.enabled = false
     local bossprof = EPGP:GetModule('boss').db.profile
     bossprof.bossreward = {
-      [710] = 1150,
-      [712] = 1150,
-      [714] = 1150,
-      [716] = 1150,
-      [1109] = 1500,
-      [663] = 600,
-      [665] = 600,
-      [667] = 600,
-      [669] = 600,
-      [671] = 600,
-      [610] = 1000,
-      [612] = 1000,
-      [614] = 1000,
-      [616] = 1000,
-      [1110] = 1500,
-      [1114] = 2000,
-      [1118] = 1500,
-      [1121] = 1500,
-      [1111] = 1500,
-      [1115] = 1500,
-      [1119] = 1500,
-      [664] = 600,
-      [1084] = 1000,
-      [709] = 1150,
-      [711] = 1150,
-      [713] = 1150,
-      [715] = 1150,
-      [717] = 1400,
-      [1107] = 1500,
-      [666] = 600,
-      [668] = 600,
-      [670] = 600,
-      [672] = 800,
-      [611] = 1000,
-      [613] = 1000,
-      [615] = 1000,
-      [617] = 1200,
-      [1117] = 1500,
-      [1108] = 1500,
-      [1112] = 1500,
-      [1116] = 1500,
-      [1120] = 1500,
-      [1113] = 1500,
+      [649] = 1000,-- maulgar
+      [650] = 1150,-- gruul
+      [651] = 1150,-- magtheridon
     }
     bossprof.enabled = true
     bossprof.autoreward = true
-    bossprof.wipedetection = true
-    if bossprof.bossreward_wipe == nil then
-      bossprof.bossreward_wipe = {}
-    end
-    for bid, ep in pairs(bossprof.bossreward) do
-      bossprof.bossreward_wipe[bid] = floor(ep / 2)
-    end
   end
 
   function SynVF:OnInitialize()
