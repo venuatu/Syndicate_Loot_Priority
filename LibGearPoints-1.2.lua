@@ -140,9 +140,19 @@ if _G.LibStub then
     EPGP:GetModule('gptooltip').db.profile.enabled = false
     local bossprof = EPGP:GetModule('boss').db.profile
     bossprof.bossreward = {
-      [649] = 1000,-- maulgar
-      [650] = 1150,-- gruul
-      [651] = 1150,-- magtheridon
+      [649] = 1600,--maulgar
+      [650] = 1800,--gruul
+      [651] = 1800,--magtheridon
+      [623] = 1800,--Hydross
+      [624] = 1800,--Lurker
+      [625] = 1800,--Leotheras
+      [626] = 1800,--Fathom
+      [627] = 1800,--Tidewalker
+      [628] = 2100,--Vashj
+      [730] = 1800,--Al'ar
+      [731] = 1800,--Void Reaver
+      [732] = 1800,--Solarian
+      [733] = 2100,--Kael'thas
     }
     bossprof.enabled = true
     bossprof.autoreward = true
